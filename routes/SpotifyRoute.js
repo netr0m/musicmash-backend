@@ -4,10 +4,12 @@ const express = require('express');
 const request = require('request');
 const buildUrl = require('build-url');
 
-var client_id = process.env.SPOTIFY_ID;
-var client_secret = process.env.SPOTIFY_SECRET;
-var authEndpoint = 'https://accounts.spotify.com/api/token';
-var endpoint = 'https://api.spotify.com/v1';
+const client_id = process.env.SPOTIFY_ID;
+if (!client_id){console.log('Missing CLIENT_ID for Spotify')}
+const client_secret = process.env.SPOTIFY_SECRET;
+if (!client_secret){console.log('Missing CLIENT_SECRET for Spotify')}
+const authBase = 'https://accounts.spotify.com/api/token';
+const base = 'https://api.spotify.com/v1';
 
 const app = express();
 const router = express.Router();
@@ -16,7 +18,7 @@ router.route('/:query').get(async (req, res) => {
     //var results = [];
     // Authorization
     var authOptions = {
-        url: authEndpoint,
+        url: authBase,
         headers: {
             'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
         },
@@ -30,7 +32,7 @@ router.route('/:query').get(async (req, res) => {
             var token = await body.access_token;
             var q = req.params.query;
 
-            url = buildUrl(endpoint, {
+            url = buildUrl(base, {
                 path: 'search',
                 queryParams: {
                     q: q,
@@ -38,7 +40,6 @@ router.route('/:query').get(async (req, res) => {
                     limit: 5
                 }
             });
-            console.log(url)
 
             var options = {
                 url: url,
