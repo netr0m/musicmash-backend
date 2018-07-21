@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -9,6 +11,8 @@
     "mongoose": "^5.2.3",
     "nodemon": "^1.18.2",
     "npm": "^6.2.0",
-    "request": "^2.87.0"
-  }
+    "request": "^2.87.0",
+    "snyk": "^1.89.0"
+  },
+  "snyk": true
 }
