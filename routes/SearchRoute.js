@@ -3,6 +3,7 @@
 const express = require('express');
 const request = require('request');
 const buildUrl = require('build-url');
+const Q = require('q');
 
 var client_id = process.env.SOUNDCLOUD_ID;
 if (!client_id) { console.log('Missing CLIENT_ID for Soundcloud') }
@@ -17,6 +18,7 @@ const router = express.Router();
 
 router.route('/:query').get(async (req, res) => {
     var q = req.params.query.replace(/ /g, '%20');
+    var spotify_controller = require('./SpotifyController');
     var scEndpoint = sc + '/' + q;
     var sptfyEndpoint = sptfy + '/' + q;
 
@@ -46,6 +48,19 @@ router.route('/:query').get(async (req, res) => {
 
     function getTracks() {
         return new Promise((resolve, reject) => {
+            var spottracks = spotify_controller.getTracks(q);
+            spottracks.then(resolve({ 'results': spottracks }));
+                /*} else {
+                    console.log(e);
+                    res.json({"error": "an error occurred while trying to fetch tracks"});
+                    reject(e);
+                }
+        });*/
+        });
+    }
+
+    /*function getTracks() {
+        return new Promise((resolve, reject) => {
             request(scOptions, (e, r, b) => {
                 if (!e) {
                     results = JSON.parse(b);
@@ -68,7 +83,7 @@ router.route('/:query').get(async (req, res) => {
                 }
             });
         });
-    }
+    }*/
 
     function mash(tracks) {
         var mashed = []
@@ -98,13 +113,18 @@ router.route('/:query').get(async (req, res) => {
     }
 
     var tracks = getTracks();
-    tracks.then(function(r) {
+    tracks.then(function (r) {
         //tl = r;
-        var trackList = mash(tracks);
-        res.json(trackList);
-    }, function(e) {
+        console.log('--------------TRACKS------------')
+        //console.log(tracks);
+        console.log(r['results']);
+        var results = r['results'];
+        //console.log(results);
+        //var trackList = mash(tracks);
+        res.json(results);
+    }, function (e) {
         console.log(e);
-        res.json({"error": "an error occurred while trying to fetch tracks"});
+        res.json({ "error": "an error occurred while trying to fetch tracks" });
     })
 })
 
