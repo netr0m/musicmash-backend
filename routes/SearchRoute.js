@@ -4,7 +4,8 @@ const express = require('express');
 const router = express.Router();
 
 router.route('/:query').get(async (req, res) => {
-    var q = req.params.query.replace(/ /g, '%20');
+    req.body.sanitized = req.sanitize(req.params.query);
+    var q = req.body.sanitized.replace(/ /g, '%20');
     var spotify_controller = require('./SpotifyController');
     var soundcloud_controller = require('./SoundCloudController');
 
