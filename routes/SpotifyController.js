@@ -16,9 +16,7 @@ const router = express.Router();
 
 function getTracks(query) {
     return new Promise((resolve, reject) => {
-        console.log(query)
         var results = [];
-        console.log('here captain')
         // Authorization
         var authOptions = {
             url: authBase,
@@ -30,9 +28,9 @@ function getTracks(query) {
             },
             json: true
         };
-        request.post(authOptions, async (e, r, b) => {
+        request.post(authOptions, (e, r, b) => {
             if (!e && r.statusCode === 200) {
-                var token = await b.access_token;
+                var token = b.access_token;
 
                 url = buildUrl(base, {
                     path: 'search',
@@ -53,11 +51,10 @@ function getTracks(query) {
                     },
                     json: true
                 };
-                var tracks = await request(options, async (e, r, b) => {
+                var tracks = request(options, (e, r, b) => {
                     if (!e && r.statusCode === 200) {
-                        tracks = await b['tracks'];
-                        results = await tracks['items'];
-                        console.log('done');
+                        tracklist = b['tracks'];
+                        results = tracklist['items'];
                         resolve(results);
                     } else {
                         console.log(e);
@@ -67,11 +64,9 @@ function getTracks(query) {
             } else {
                 console.log(e);
                 reject(e);
-                //return { 'error': 'an error occurred while trying to fetch tracks from Spotify' };
             }
         });
     });
-    //return results;
 }
 
 module.exports.getTracks = getTracks;
