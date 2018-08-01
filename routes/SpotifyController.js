@@ -5,16 +5,16 @@ const request = require('request');
 const buildUrl = require('build-url');
 
 const client_id = process.env.SPOTIFY_ID;
-if (!client_id){console.log('Missing CLIENT_ID for Spotify')}
+if (!client_id) { console.log('Missing CLIENT_ID for Spotify') }
 const client_secret = process.env.SPOTIFY_SECRET;
-if (!client_secret){console.log('Missing CLIENT_SECRET for Spotify')}
+if (!client_secret) { console.log('Missing CLIENT_SECRET for Spotify') }
 const authBase = 'https://accounts.spotify.com/api/token';
 const base = 'https://api.spotify.com/v1';
 
 const app = express();
 const router = express.Router();
 
-function getTracks (query) {
+function getTracks(query) {
     return new Promise((resolve, reject) => {
         console.log(query)
         var results = [];
@@ -54,12 +54,15 @@ function getTracks (query) {
                     json: true
                 };
                 var tracks = await request(options, async (e, r, b) => {
-                    tracks = await b['tracks'];
-                    results = await tracks['items'];
-                    console.log('done');
-                    //res.json(results)
-                    //return results;
-                    resolve( results );
+                    if (!e && r.statusCode === 200) {
+                        tracks = await b['tracks'];
+                        results = await tracks['items'];
+                        console.log('done');
+                        resolve(results);
+                    } else {
+                        console.log(e);
+                        reject(e);
+                    }
                 });
             } else {
                 console.log(e);
