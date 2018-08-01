@@ -8,6 +8,7 @@ router.route('/:query').get(async (req, res) => {
     var q = req.body.sanitized.replace(/ /g, '%20');
     var spotify_controller = require('./SpotifyController');
     var soundcloud_controller = require('./SoundCloudController');
+    var youtube_controller = require('./YouTubeController');
 
     function getTracks() {
         return new Promise((resolve, reject) => {
@@ -19,7 +20,12 @@ router.route('/:query').get(async (req, res) => {
                 var sc_tracks = soundcloud_controller.getTracks(q);
                 sc_tracks.then(function (sc_tracks) {
                     tracks['soundcloud'] = sc_tracks;
-                    resolve(tracks)
+
+		    var yt_tracks = youtube_controller.getTracks(q);
+		    yt_tracks.then(function (yt_tracks) {
+		    	tracks['youtube'] = yt_tracks;
+                    	resolve(tracks);
+		    });
                 });
             });
         });
@@ -29,9 +35,11 @@ router.route('/:query').get(async (req, res) => {
         var mashed = {};
         soundcloud = tracks['soundcloud'];
         spotify = tracks['spotify'];
+	youtube = tracks['youtube'];
 
         sptfy_parsed = [];
         sc_parsed = [];
+	yt_parsed = [];
 
         soundcloud.forEach(function (track) {
             m = {
@@ -53,7 +61,19 @@ router.route('/:query').get(async (req, res) => {
             };
             sptfy_parsed.push(m);
         });
-        mashed['spotify'] = sptfy_parsed;
+	mashed['spotify'] = sptfy_parsed;
+
+	yt_prefix='https://www.youtube.com/watch?v=';
+	youtube.forEach(function (track) {
+	    m = {
+                'title': track.snippet.title,
+                'duration': track.duration_ms,
+                'permlink': yt_prefix + track.id.videoId,
+                'provider': 'YouTube'
+            };
+            yt_parsed.push(m);
+        });
+	mashed['youtube'] = yt_parsed;
 
         return mashed
     }
