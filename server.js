@@ -8,7 +8,7 @@ const SearchRoute = require('./routes/SearchRoute');
 const SpotifyRoute = require('./routes/SpotifyRoute');
 const SoundcloudRoute = require('./routes/SoundCloudRoute');
 
-const PORT = 4000;
+const PORT = 5000;
 
 app.use(bodyParser.json());
 app.use('/search', SearchRoute);
