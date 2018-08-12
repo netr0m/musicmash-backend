@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const app = express();
 const SearchRoute = require('./routes/SearchRoute');
 
-const PORT = 80;
+const PORT = 8080;
 
 app.use(bodyParser.json());
 app.use(expressSanitizer());
