@@ -8,6 +8,7 @@ const helmet = require('helmet');
 
 const app = express();
 const SearchRoute = require('./routes/SearchRoute');
+const auth0 = require('./auth0');
 
 const PORT = 8080;
 
