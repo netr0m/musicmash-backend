@@ -11,6 +11,7 @@
     "express": "^4.16.3",
     "express-sanitizer": "^1.0.4",
     "helmet": "^3.13.0",
+    "moment": "^2.22.2",
     "mongoose": "^5.2.3",
     "nodemon": "^1.18.2",
     "npm": "^6.2.0",
