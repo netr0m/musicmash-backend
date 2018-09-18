@@ -9,9 +9,9 @@ router.route('/:query').get(async (req, res) => {
     req.body.sanitized = req.sanitize(req.params.query);
     var q = req.body.sanitized.replace(/ /g, '%20');
 
-    const spotify_controller = require('./SpotifyController');
-    const soundcloud_controller = require('./SoundCloudController');
-    const youtube_controller = require('./YouTubeController');
+    const spotify_controller = require('../controllers/SpotifyController');
+    const soundcloud_controller = require('../controllers/SoundCloudController');
+    const youtube_controller = require('../controllers/YouTubeController');
 
     function getTracks() {
         return new Promise((resolve, reject) => {
