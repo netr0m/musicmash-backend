@@ -1,51 +1,50 @@
-module.exports = function mash(tracks) {
-    var mashed = {};
-    soundcloud = tracks['soundcloud'];
-    spotify = tracks['spotify'];
-    youtube = tracks['youtube'];
+module.exports = function mash (tracks) {
+  var mashed = {}
+  const soundcloud = tracks['soundcloud']
+  const spotify = tracks['spotify']
+  const youtube = tracks['youtube']
 
-    sptfy_parsed = [];
-    sc_parsed = [];
-    yt_parsed = [];
+  var spotifyParsed = []
+  var soundcloudParsed = []
+  var youtubeParsed = []
 
-    soundcloud.forEach(function (track) {
-        m = {
-            'title': track.title,
-            'duration': track.duration,
-            'permlink': track.permalink_url,
-            'provider': 'SoundCloud'
-        };
-        sc_parsed.push(m);
-    });
-    mashed['soundcloud'] = sc_parsed;
-    spotify.forEach(function (track) {
-        // TODO Add for-loop to add a few more artists if any
-        var _artists = track.artists;
-        var artists = [];
-        _artists.forEach(function (artist) {
-            artists.push(artist.name);
-        });
-        m = {
-            'title': track.name + ' - ' + artists.toString(),//track.artists[0].name,
-            'duration': track.duration_ms,
-            'permlink': track.external_urls.spotify,
-            'provider': 'Spotify'
-        };
-        sptfy_parsed.push(m);
-    });
-    mashed['spotify'] = sptfy_parsed;
+  soundcloud.forEach(function (track) {
+    const m = {
+      'title': track.title,
+      'duration': track.duration,
+      'permlink': track.permalink_url,
+      'provider': 'SoundCloud'
+    }
+    soundcloudParsed.push(m)
+  })
+  mashed['soundcloud'] = soundcloudParsed
+  spotify.forEach(function (track) {
+    const _artists = track.artists
+    var artists = []
+    _artists.forEach(function (artist) {
+      artists.push(artist.name)
+    })
+    const m = {
+      'title': track.name + ' - ' + artists.toString(), // track.artists[0].name,
+      'duration': track.duration_ms,
+      'permlink': track.external_urls.spotify,
+      'provider': 'Spotify'
+    }
+    spotifyParsed.push(m)
+  })
+  mashed['spotify'] = spotifyParsed
 
-    yt_prefix = 'https://www.youtube.com/watch?v=';
-    youtube.forEach(function (track) {
-        m = {
-            'title': track.snippet.title,
-            'duration': track.duration,
-            'permlink': yt_prefix + track.id.videoId,
-            'provider': 'YouTube'
-        };
-        yt_parsed.push(m);
-    });
-    mashed['youtube'] = yt_parsed;
+  const youtubePrefix = 'https://www.youtube.com/watch?v='
+  youtube.forEach(function (track) {
+    const m = {
+      'title': track.snippet.title,
+      'duration': track.duration,
+      'permlink': youtubePrefix + track.id.videoId,
+      'provider': 'YouTube'
+    }
+    youtubeParsed.push(m)
+  })
+  mashed['youtube'] = youtubeParsed
 
-    return mashed
+  return mashed
 }
