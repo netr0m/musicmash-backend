@@ -15,7 +15,7 @@ function getAccessToken () {
 
   const url = 'https://accounts.spotify.com/api/token'
 
-  const authConfig = {
+  const config = {
     headers: {
       'Authorization': 'Basic ' + (new Buffer(clientID + ':' + clientSecret).toString('base64')),
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -27,14 +27,26 @@ function getAccessToken () {
     grant_type: 'client_credentials'
   })
 
-  return axios.post(url, body, authConfig)
+  return axios.post(url, body, config)
+    .catch(function (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else if (err.request) {
+        console.log(err.request)
+      } else {
+        console.log('Error', err.message)
+      }
+      console.log(err.config)
+    })
 }
 
 /*
 Function to get the tracks
 */
 function getTracks (query, accessToken) {
-  const base = 'https://api.spotify.com/v1'
+  const baseUrl = 'https://api.spotify.com/v1'
 
   const config = {
     headers: {
@@ -45,7 +57,7 @@ function getTracks (query, accessToken) {
   }
 
   // Build the full URL
-  const url = buildUrl(base, {
+  const url = buildUrl(baseUrl, {
     path: 'search',
     queryParams: {
       q: query,
@@ -55,6 +67,18 @@ function getTracks (query, accessToken) {
   })
 
   return axios.get(url, config)
+    .catch(function (err) {
+      if (err.response) {
+        console.log(err.response.data)
+        console.log(err.response.status)
+        console.log(err.response.headers)
+      } else if (err.request) {
+        console.log(err.request)
+      } else {
+        console.log('Error', err.message)
+      }
+      console.log(err.config)
+    })
 }
 
 /*
