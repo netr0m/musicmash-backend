@@ -5,6 +5,7 @@
     "prepare": "npm run snyk-protect"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "build-url": "^1.1.2",
     "compression": "^1.7.3",
@@ -18,6 +19,7 @@
     "mongoose": "^5.2.3",
     "nodemon": "^1.18.2",
     "npm": "^6.2.0",
+    "querystring": "^0.2.0",
     "request": "^2.87.0",
     "snyk": "^1.89.0"
   },
