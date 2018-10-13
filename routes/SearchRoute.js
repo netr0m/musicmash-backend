@@ -2,45 +2,57 @@
 
 const express = require('express')
 const router = express.Router()
+const axios = require('axios')
 
 const mash = require('../helpers/mash')
 const spotifyController = require('../controllers/SpotifyController')
 const soundcloudController = require('../controllers/SoundCloudController')
 const youtubeController = require('../controllers/YouTubeController')
 
-router.route('').get(async (req, res) => {
-  req.body.sanitized = req.sanitize(req.query.q)
-  const q = req.body.sanitized.replace(/ /g, '%20')
+function getTracks (query) {
+  var tracks = {}
 
-  function getTracks () {
-    return new Promise((resolve, reject) => {
-      var tracks = {}
-      var spotifyTracks = spotifyController.getTracks(q)
-      spotifyTracks.then(function (spotifyTracks) {
-        tracks['spotify'] = spotifyTracks
-
-        var soundcloudTracks = soundcloudController.getTracks(q)
-        soundcloudTracks.then(function (soundcloudTracks) {
-          tracks['soundcloud'] = soundcloudTracks
-
-          var youtubeTracks = youtubeController.getTracks(q)
-          youtubeTracks.then(function (youtubeTracks) {
-            tracks['youtube'] = youtubeTracks
-            resolve(tracks)
-          })
-        })
+  return new Promise((resolve, reject) => {
+    // Execute the functions concurrently
+    axios.all([spotifyController.search(query), soundcloudController.search(query), youtubeController.search(query)])
+      .then(axios.spread(function (spotifyResult, soundcloudResult, youtubeResult) {
+        tracks['spotify'] = spotifyResult.data.tracks.items
+        tracks['soundcloud'] = soundcloudResult.data.collection
+        tracks['youtube'] = youtubeResult
+        resolve(tracks)
+      }))
+      .catch(function (err) {
+        if (err.response) {
+          console.log(err.response.data)
+          console.log(err.response.status)
+          console.log(err.response.headers)
+        } else if (err.request) {
+          console.log(err.request)
+        } else {
+          console.log('Error', err.message)
+        }
+        console.log(err.config)
+        reject(err)
       })
-    })
-  }
-
-  var tracks = getTracks()
-  tracks.then(function (tracks) {
-    var trackList = mash(tracks)
-    res.json(trackList)
-  }, function (e) {
-    console.log(e)
-    res.json({ 'error': 'an error occurred while trying to fetch tracks' })
   })
+}
+
+router.route('').get((req, res) => {
+  req.body.sanitized = req.sanitize(req.query.q)
+  const q = req.body.sanitized.replace(/ /g, '+')
+
+  const tracks = getTracks(q)
+
+  tracks
+    .then(function (tracks) {
+      // res.json(tracks['spotify'])
+      const trackList = mash(tracks)
+      res.json(trackList)
+    })
+    .catch(function (err) {
+      console.log(err)
+      res.json({ 'success': false, 'message': 'An error occurred while fetching the tracks' })
+    })
 })
 
 module.exports = router
