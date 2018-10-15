@@ -3,7 +3,7 @@
 const axios = require('axios')
 const buildUrl = require('build-url')
 
-function search (query) {
+function search (query, limit) {
   const clientID = process.env.SOUNDCLOUD_ID
   if (!clientID) { console.log('Missing clientID for Soundcloud') }
 
@@ -14,7 +14,7 @@ function search (query) {
     queryParams: {
       q: query,
       client_id: clientID,
-      limit: 5,
+      limit: limit,
       offset: 0,
       app_locale: 'en'
     }

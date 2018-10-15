@@ -45,7 +45,7 @@ function getAccessToken () {
 /*
 Function to get the tracks
 */
-function getTracks (query, accessToken) {
+function getTracks (query, limit, accessToken) {
   const baseUrl = 'https://api.spotify.com/v1'
 
   const config = {
@@ -62,7 +62,7 @@ function getTracks (query, accessToken) {
     queryParams: {
       q: query,
       type: 'track',
-      limit: 5
+      limit: limit
     }
   })
 
@@ -84,14 +84,14 @@ function getTracks (query, accessToken) {
 /*
 Function that retrieves an access_token, then retrieves tracks
 */
-function search (query) {
+function search (query, limit) {
   return new Promise((resolve, reject) => {
     const auth = getAccessToken()
     auth
       .then(function (authRes) {
         const accessToken = authRes.data.access_token
 
-        resolve(getTracks(query, accessToken))
+        resolve(getTracks(query, limit, accessToken))
       })
       .catch(function (err) {
         console.log(err)

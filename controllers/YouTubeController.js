@@ -8,13 +8,13 @@ const apiKey = process.env.YOUTUBE_KEY
 if (!apiKey) { console.log('Missing apiKey for Soundcloud') }
 const baseUrl = 'https://www.googleapis.com/youtube/v3'
 
-function getTracks (query) {
+function getTracks (query, limit) {
   const url = buildUrl(baseUrl, {
     path: 'search',
     queryParams: {
       q: query,
       type: 'video',
-      maxResults: 5,
+      maxResults: limit,
       part: 'snippet',
       order: 'relevance',
       key: apiKey
@@ -75,11 +75,11 @@ function getContentDetails (trackIds) {
     })
 }
 
-function search (query) {
+function search (query, limit) {
   var results = []
 
   return new Promise((resolve, reject) => {
-    const tracks = getTracks(query)
+    const tracks = getTracks(query, limit)
     tracks
       .then(function (tracksRes) {
         const trackList = tracksRes.data.items
