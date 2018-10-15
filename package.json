@@ -1,6 +1,29 @@
 {
+  "name": "MusicMash",
+  "version": "1.0.0",
+  "main": "server.js",
+  "description": "MusicMash is an API that lets you search for music across Spotify, SoundCloud and YouTube from a single endpoint.",
+  "keywords": [
+    "music",
+    "musicmash",
+    "search",
+    "spotify",
+    "soundcloud",
+    "youtube",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mortea15/musicmash-backend.git"
+  },
+  "author": "mortea15",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/mortea15/musicmash-backend/issues"
+  },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
   },
@@ -19,7 +42,6 @@
     "jwks-rsa": "^1.3.0",
     "moment": "^2.22.2",
     "mongoose": "^5.3.3",
-    "nodemon": "^1.18.2",
     "npm": "^6.2.0",
     "querystring": "^0.2.0",
     "request": "^2.87.0",
@@ -27,6 +49,7 @@
   },
   "snyk": true,
   "devDependencies": {
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.2"
   }
 }
