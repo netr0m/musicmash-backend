@@ -39,7 +39,7 @@ const api = {
     req.body.sanitized.q = req.sanitize(req.query.q)
     req.body.sanitized.limit = req.sanitize(req.query.limit)
     const q = req.body.sanitized.q.replace(/ /g, '+')
-    const l = req.body.sanitized.limit || 5
+    const l = req.body.sanitized.limit <= 50 ? req.body.sanitized.limit : 5
 
     const tracks = getTracks(q, l)
 
