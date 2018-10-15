@@ -1,0 +1,12 @@
+export SPOTIFY_ID=
+export SPOTIFY_SECRET=
+export SOUNDCLOUD_ID=
+export YOUTUBE_KEY=
+export HOST=
+export PORT=
+export APP_SECRET=
+export MONGO_HOST=
+export MONGO_PORT=
+export MONGO_USERNAME=
+export MONGO_PASSWORD=
+export MONGO_DATABASE=
