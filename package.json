@@ -45,7 +45,8 @@
     "npm": "^6.2.0",
     "querystring": "^0.2.0",
     "request": "^2.87.0",
-    "snyk": "^1.89.0"
+    "snyk": "^1.89.0",
+    "winston": "^3.1.0"
   },
   "snyk": true,
   "devDependencies": {
