@@ -1,13 +1,9 @@
-// SearchRoute.js
-
-const express = require('express')
-const router = express.Router()
 const axios = require('axios')
 
 const mash = require('../helpers/mash')
-const spotifyController = require('../controllers/SpotifyController')
-const soundcloudController = require('../controllers/SoundCloudController')
-const youtubeController = require('../controllers/YouTubeController')
+const spotifyController = require('./SpotifyController')
+const soundcloudController = require('./SoundCloudController')
+const youtubeController = require('./YouTubeController')
 
 function getTracks (query) {
   var tracks = {}
@@ -37,22 +33,23 @@ function getTracks (query) {
   })
 }
 
-router.route('').get((req, res) => {
-  req.body.sanitized = req.sanitize(req.query.q)
-  const q = req.body.sanitized.replace(/ /g, '+')
+const api = {
+  search: (req, res) => {
+    req.body.sanitized = req.sanitize(req.query.q)
+    const q = req.body.sanitized.replace(/ /g, '+')
 
-  const tracks = getTracks(q)
+    const tracks = getTracks(q)
 
-  tracks
-    .then(function (tracks) {
-      // res.json(tracks['spotify'])
-      const trackList = mash(tracks)
-      res.json(trackList)
-    })
-    .catch(function (err) {
-      console.log(err)
-      res.json({ 'success': false, 'message': 'An error occurred while fetching the tracks' })
-    })
-})
+    tracks
+      .then(function (tracks) {
+        const trackList = mash(tracks)
+        res.json(trackList)
+      })
+      .catch(function (err) {
+        console.log(err)
+        res.json({ 'success': false, 'message': 'An error occurred while fetching the tracks' })
+      })
+  }
+}
 
-module.exports = router
+module.exports = api
