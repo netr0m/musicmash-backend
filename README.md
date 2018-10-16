@@ -41,4 +41,4 @@ MONGO_DATABASE=musicmash
 
 ## API documentation
 
-**Coming soon!**
+[**API docs are hosted with _Postman_ here**](https://documenter.getpostman.com/view/4961373/RWgrzJhh)
