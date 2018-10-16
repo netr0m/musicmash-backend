@@ -4,6 +4,8 @@ const axios = require('axios')
 const buildUrl = require('build-url')
 const moment = require('moment')
 
+const logger = require('../helpers/logger')
+
 const apiKey = process.env.YOUTUBE_KEY
 if (!apiKey) { console.log('Missing apiKey for Soundcloud') }
 const baseUrl = 'https://www.googleapis.com/youtube/v3'
@@ -31,12 +33,15 @@ function getTracks (query, limit) {
   return axios.get(url, config)
     .catch(function (err) {
       if (err.response) {
+        logger.log('error', `YouTube API error (response) ${err.response.status}`)
         console.log(err.response.data)
         console.log(err.response.status)
         console.log(err.response.headers)
       } else if (err.request) {
+        logger.log('error', `YouTube API error (request) ${err.request}`)
         console.log(err.request)
       } else {
+        logger.log('error', `YouTube API error ${err.message}`)
         console.log('Error', err.message)
       }
       console.log(err.config)
@@ -63,12 +68,15 @@ function getContentDetails (trackIds) {
   return axios.get(url, config)
     .catch(function (err) {
       if (err.response) {
+        logger.log('error', `YouTube (details) API error (response) ${err.response.status}`)
         console.log(err.response.data)
         console.log(err.response.status)
         console.log(err.response.headers)
       } else if (err.request) {
+        logger.log('error', `YouTube (details) API error (request) ${err.request}`)
         console.log(err.request)
       } else {
+        logger.log('error', `YouTube (details) API error ${err.message}`)
         console.log('Error', err.message)
       }
       console.log(err.config)
@@ -113,11 +121,13 @@ function search (query, limit) {
             resolve(results)
           })
           .catch(function (err) {
+            logger.log('error', 'YouTube API error %s', err)
             console.log(err)
             reject(err)
           })
       })
       .catch(function (err) {
+        logger.log('error', 'YouTube API error %s', err)
         console.log(err)
         reject(err)
       })

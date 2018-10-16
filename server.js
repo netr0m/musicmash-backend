@@ -5,7 +5,8 @@ const bodyParser = require('body-parser')
 const expressSanitizer = require('express-sanitizer')
 const compression = require('compression')
 const helmet = require('helmet')
-const logger = require('morgan')
+
+const logger = require('./helpers/logger')
 
 const routes = require('./routes/index')
 
@@ -17,7 +18,8 @@ const stage = require('./config')[environment]
 const PORT = stage.port
 
 if (environment !== 'production') {
-  app.use(logger('dev'))
+  const morgan = require('morgan')
+  app.use(morgan('dev'))
 }
 
 app.use(bodyParser.json())
@@ -28,5 +30,6 @@ app.use(helmet())
 app.use('/api/v1', routes(router))
 
 app.listen(PORT, function () {
+  logger.log('info', `musicmash-backend running on ${PORT}`)
   console.log('musicmash-backend running on :', PORT)
 })
