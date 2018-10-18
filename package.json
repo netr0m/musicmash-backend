@@ -1,6 +1,6 @@
 {
   "name": "MusicMash",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "server.js",
   "description": "MusicMash is an API that lets you search for music across Spotify, SoundCloud and YouTube from a single endpoint.",
   "keywords": [
