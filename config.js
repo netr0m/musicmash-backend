@@ -1,6 +1,7 @@
 const config = {}
 
 config.dbstring = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`
+//config.dbstring = 'mongodb://localhost:27017/musicmash'
 config.development = {
   port: process.env.PORT || 3000,
   saltingRounds: 9

@@ -27,7 +27,7 @@ app.use(expressSanitizer())
 app.use(compression())
 app.use(helmet())
 
-app.use('/api/v1', routes(router))
+app.use('/v1', routes(router))
 
 app.listen(PORT, function () {
   logger.log('info', `musicmash-backend running on ${PORT}`)

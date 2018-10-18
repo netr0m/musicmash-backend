@@ -18,7 +18,10 @@ const users = {
         user.save((err, user) => {
           if (!err) {
             result.status = status
-            result.result = user
+            result.result = {
+                email: user.email,
+                username: user.username
+            }
           } else {
             status = 500
             result.status = status
