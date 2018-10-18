@@ -4,6 +4,7 @@ export SOUNDCLOUD_ID=
 export YOUTUBE_KEY=
 export HOST=
 export PORT=
+export NODE_ENV=
 export APP_SECRET=
 export MONGO_HOST=
 export MONGO_PORT=
