@@ -46,6 +46,7 @@
     "querystring": "^0.2.0",
     "request": "^2.88.0",
     "snyk": "^1.104.1"
+    "winston": "^3.1.0"
   },
   "snyk": true,
   "devDependencies": {

@@ -3,6 +3,8 @@ const axios = require('axios')
 const querystring = require('querystring')
 const buildUrl = require('build-url')
 
+const logger = require('../helpers/logger')
+
 /*
 Function to get an access token for authentication
 */
@@ -30,12 +32,15 @@ function getAccessToken () {
   return axios.post(url, body, config)
     .catch(function (err) {
       if (err.response) {
+        logger.log('error', `Spotify Auth API error (response) ${err.response.status}`)
         console.log(err.response.data)
         console.log(err.response.status)
         console.log(err.response.headers)
       } else if (err.request) {
+        logger.log('error', `Spotify Auth API error (request) ${err.request}`)
         console.log(err.request)
       } else {
+        logger.log('error', `Spotify Auth API error ${err.message}`)
         console.log('Error', err.message)
       }
       console.log(err.config)
@@ -69,12 +74,15 @@ function getTracks (query, limit, accessToken) {
   return axios.get(url, config)
     .catch(function (err) {
       if (err.response) {
+        logger.log('error', `Spotify API error (response) ${err.response.status}`)
         console.log(err.response.data)
         console.log(err.response.status)
         console.log(err.response.headers)
       } else if (err.request) {
+        logger.log('error', `Spotify API error (request) ${err.request}`)
         console.log(err.request)
       } else {
+        logger.log('error', `Spotify API error ${err.message}`)
         console.log('Error', err.message)
       }
       console.log(err.config)
@@ -94,6 +102,7 @@ function search (query, limit) {
         resolve(getTracks(query, limit, accessToken))
       })
       .catch(function (err) {
+        logger.log('error', 'Spotify Authentication error %s', err)
         console.log(err)
         reject(err)
       })

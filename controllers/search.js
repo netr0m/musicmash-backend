@@ -1,5 +1,6 @@
 const axios = require('axios')
 
+const logger = require('../helpers/logger')
 const mash = require('../helpers/mash')
 const spotifyController = require('./SpotifyController')
 const soundcloudController = require('./SoundCloudController')
@@ -12,21 +13,25 @@ function getTracks (query, limit) {
     // Execute the functions concurrently
     axios.all([spotifyController.search(query, limit), soundcloudController.search(query, limit), youtubeController.search(query, limit)])
       .then(axios.spread(function (spotifyResult, soundcloudResult, youtubeResult) {
-        tracks['spotify'] = spotifyResult.data.tracks.items
+        tracks['spotify'] = spotifyResult.data.tracks
         tracks['soundcloud'] = soundcloudResult.data.collection
         tracks['youtube'] = youtubeResult
         resolve(tracks)
       }))
       .catch(function (err) {
         if (err.response) {
+          logger.log('error', `API error (response) ${err.response.data}`)
           console.log(err.response.data)
           console.log(err.response.status)
           console.log(err.response.headers)
         } else if (err.request) {
+          logger.log('error', `API error (request) ${err.request}`)
           console.log(err.request)
         } else {
+          logger.log('error', `API error ${err.message}`)
           console.log('Error', err.message)
         }
+        logger.log('error', `API error ${err.config}`)
         console.log(err.config)
         reject(err)
       })
@@ -49,6 +54,7 @@ const api = {
         res.json(trackList)
       })
       .catch(function (err) {
+        logger.log('error', 'Mash error')
         console.log(err)
         res.json({ 'success': false, 'message': 'An error occurred while fetching the tracks' })
       })
