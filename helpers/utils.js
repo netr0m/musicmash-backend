@@ -6,7 +6,7 @@ const utils = {
     let result
     if (authorizationHeader) {
       const token = req.headers.authorization.split(' ')[1]
-      const options = { expiresIn: '7d', issuer: 'https://brewsource.no' }
+      const options = { expiresIn: '7d', issuer: 'https://api.musicmash.xyz' }
       try {
         result = jwt.verify(token, process.env.APP_SECRET, options)
 
