@@ -7,4 +7,6 @@ module.exports = (router) => {
     .get(validateToken, controller.list)
   router.route('/login')
     .post(controller.login)
+  router.route('/auth/verify')
+    .get(validateToken, controller.verify)
 }
