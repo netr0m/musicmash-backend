@@ -19,8 +19,8 @@ const users = {
           if (!err) {
             result.status = status
             result.result = {
-                email: user.email,
-                username: user.username
+              email: user.email,
+              username: user.username
             }
           } else {
             status = 500
@@ -52,7 +52,7 @@ const users = {
                 status = 200
                 // Create the token
                 const payload = { email: user.email, username: user.username, admin: user.admin }
-                const options = { expiresIn: '7d', issuer: 'https://brewsource.no' }
+                const options = { expiresIn: '7d', issuer: 'https://api.musicmash.xyz' }
                 const secret = process.env.APP_SECRET
                 const token = jwt.sign(payload, secret, options)
 
@@ -117,6 +117,20 @@ const users = {
         res.status(status).send(result)
       }
     })
+  },
+  verify: (req, res) => {
+    let result = {}
+    let status = 200
+    const payload = req.decoded
+    if (payload) {
+      result.status = status
+      result.decoded = payload
+    } else {
+      status = 401
+      result.status = status
+      result.error = 'Authentication error'
+    }
+    res.status(status).send(result)
   }
 }
 
