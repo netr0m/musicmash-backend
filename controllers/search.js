@@ -13,7 +13,7 @@ function getTracks (query, limit) {
     // Execute the functions concurrently
     axios.all([spotifyController.search(query, limit), soundcloudController.search(query, limit), youtubeController.search(query, limit)])
       .then(axios.spread(function (spotifyResult, soundcloudResult, youtubeResult) {
-        tracks['spotify'] = spotifyResult.data.tracks
+        tracks['spotify'] = spotifyResult.data.tracks.items
         tracks['soundcloud'] = soundcloudResult.data.collection
         tracks['youtube'] = youtubeResult
         resolve(tracks)

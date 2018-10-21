@@ -18,7 +18,7 @@ module.exports = function mash (tracks) {
     soundcloudParsed.push(m)
   })
   mashed['soundcloud'] = soundcloudParsed
-  
+
   spotify.forEach(function (track) {
     const _artists = track.artists
     var artists = []
